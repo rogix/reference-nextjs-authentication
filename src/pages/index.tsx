@@ -7,7 +7,8 @@ import {
   FormLabel,
   Input,
 } from '@chakra-ui/react'
-import type { NextPage } from 'next'
+import type { GetServerSideProps, NextPage } from 'next'
+import { parseCookies } from 'nookies'
 import { useContext, useState } from 'react'
 import { Header } from '../components/Header/Header'
 import { AuthContext } from '../contexts/AuthContext'
@@ -79,3 +80,20 @@ const Home: NextPage = () => {
 }
 
 export default Home
+
+export const getServerSideProps: GetServerSideProps = async ctx => {
+  const cookies = parseCookies(ctx)
+
+  if (cookies['nextauth.token']) {
+    return {
+      redirect: {
+        destination: '/dashboard',
+        permanent: false,
+      },
+    }
+  }
+
+  return {
+    props: {},
+  }
+}
