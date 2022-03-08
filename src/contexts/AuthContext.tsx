@@ -1,9 +1,9 @@
 import { createContext, useState } from 'react'
-import { authApi } from '../services/api'
 import { destroyCookie, parseCookies, setCookie } from 'nookies'
 
 import Router from 'next/router'
 import { useEffect } from 'react'
+import { authApi } from '../services/apiClient'
 
 type User = {
   email: string

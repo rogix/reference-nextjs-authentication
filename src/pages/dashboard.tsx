@@ -1,7 +1,9 @@
 import { Box, Flex, Heading } from '@chakra-ui/react'
 import { useContext, useEffect } from 'react'
 import { AuthContext } from '../contexts/AuthContext'
-import { authApi } from '../services/api'
+import { setupAPIClient } from '../services/api'
+import { authApi } from '../services/apiClient'
+import { withSSRAuth } from '../utils/withSSRAuth'
 
 export default function Dashboard() {
   const { user } = useContext(AuthContext)
@@ -27,3 +29,13 @@ export default function Dashboard() {
     </Box>
   )
 }
+
+export const getServerSideProps = withSSRAuth(async ctx => {
+  const apiClient = setupAPIClient(ctx)
+
+  const response = await apiClient.get('/me')
+
+  return {
+    props: {},
+  }
+})
