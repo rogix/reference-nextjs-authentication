@@ -9,7 +9,7 @@ export default function Dashboard() {
   useEffect(() => {
     authApi.get('/me').then(response => {
       // eslint-disable-next-line no-console
-      console.log(response.data)
+      console.log(response?.data)
     })
   }, [])
 
