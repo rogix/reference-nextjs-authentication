@@ -7,10 +7,16 @@ export default function Dashboard() {
   const { user } = useContext(AuthContext)
 
   useEffect(() => {
-    authApi.get('/me').then(response => {
-      // eslint-disable-next-line no-console
-      console.log(response?.data)
-    })
+    authApi
+      .get('/me')
+      .then(response => {
+        // eslint-disable-next-line no-console
+        console.log(response)
+      })
+      .catch(error => {
+        // eslint-disable-next-line no-console
+        console.log(error)
+      })
   }, [])
 
   return (
