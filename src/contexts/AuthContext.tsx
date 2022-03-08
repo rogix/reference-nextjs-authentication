@@ -1,8 +1,9 @@
 import { createContext, useState } from 'react'
 import { authApi } from '../services/api'
-import { setCookie } from 'nookies'
+import { parseCookies, setCookie } from 'nookies'
 
 import Router from 'next/router'
+import { useEffect } from 'react'
 
 type User = {
   email: string
@@ -32,6 +33,20 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const isAuthenticated = !!user
 
+  useEffect(() => {
+    const { 'nextauth.token': token } = parseCookies()
+
+    if (token) {
+      authApi.get<User>('/me').then(response => {
+        // eslint-disable-next-line no-console
+        console.log(response.data)
+        const { email, permissions, roles } = response.data
+
+        setUser({ email, permissions, roles })
+      })
+    }
+  }, [])
+
   const signIn = async ({ email, password }: SignInCredentials) => {
     try {
       const response = await authApi.post('/sessions', { email, password })
@@ -53,6 +68,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
         permissions,
         roles,
       })
+
+      authApi.defaults.headers['Authorization'] = `Bearer ${token}`
 
       await Router.push('/dashboard')
     } catch (err) {

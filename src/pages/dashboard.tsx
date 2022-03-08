@@ -1,9 +1,17 @@
 import { Box, Flex, Heading } from '@chakra-ui/react'
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import { AuthContext } from '../contexts/AuthContext'
+import { authApi } from '../services/api'
 
 export default function Dashboard() {
   const { user } = useContext(AuthContext)
+
+  useEffect(() => {
+    authApi.get('/me').then(response => {
+      // eslint-disable-next-line no-console
+      console.log(response.data)
+    })
+  }, [])
 
   return (
     <Box bg="gray.700" h="100vh" color="white">
