@@ -1,4 +1,4 @@
-import { Box, Flex, Heading } from '@chakra-ui/react'
+import { Box, Button, Flex, Heading } from '@chakra-ui/react'
 import { useContext, useEffect } from 'react'
 import { Can } from '../components/Can'
 import { AuthContext } from '../contexts/AuthContext'
@@ -7,7 +7,7 @@ import { authApi } from '../services/apiClient'
 import { withSSRAuth } from '../utils/withSSRAuth'
 
 export default function Dashboard() {
-  const { user } = useContext(AuthContext)
+  const { user, signOut } = useContext(AuthContext)
 
   useEffect(() => {
     authApi
@@ -30,6 +30,10 @@ export default function Dashboard() {
         <Can permissions={['metrics.list']}>
           <p>You can see metrics</p>
         </Can>
+
+        <Button onClick={signOut} colorScheme="blackAlpha" mt={20}>
+          Sign out
+        </Button>
       </Flex>
     </Box>
   )
