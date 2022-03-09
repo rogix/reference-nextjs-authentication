@@ -1,17 +1,13 @@
 import { Box, Flex, Heading } from '@chakra-ui/react'
 import { useContext, useEffect } from 'react'
+import { Can } from '../components/Can'
 import { AuthContext } from '../contexts/AuthContext'
-import { useCan } from '../hooks/useCan'
 import { setupAPIClient } from '../services/api'
 import { authApi } from '../services/apiClient'
 import { withSSRAuth } from '../utils/withSSRAuth'
 
 export default function Dashboard() {
   const { user } = useContext(AuthContext)
-
-  const useCanSeeMetrics = useCan({
-    permissions: ['metrics.list'],
-  })
 
   useEffect(() => {
     authApi
@@ -31,7 +27,9 @@ export default function Dashboard() {
       <Flex flexDirection="column" align="center" justify="center" h="100%">
         <Heading>Hello: {user?.email}</Heading>
 
-        {useCanSeeMetrics && <p>You can see metrics</p>}
+        <Can permissions={['metrics.list']}>
+          <p>You can see metrics</p>
+        </Can>
       </Flex>
     </Box>
   )
